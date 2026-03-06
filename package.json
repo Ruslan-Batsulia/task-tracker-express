@@ -1,0 +1,31 @@
+{
+  "name": "task-tracker-express",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Ruslan-Batsulia/task-tracker-express#readme",
+  "bugs": {
+    "url": "https://github.com/Ruslan-Batsulia/task-tracker-express/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ruslan-Batsulia/task-tracker-express.git"
+  },
+  "license": "ISC",
+  "author": "Ruslan Batsulia",
+  "type": "commonjs",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node src/index",
+    "dev": "nodemon src/index.ts"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
