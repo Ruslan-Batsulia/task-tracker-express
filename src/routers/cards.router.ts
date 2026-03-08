@@ -1,40 +1,78 @@
 import express, { Response, Request } from 'express';
 import { Card, CreateCardRequest, GetCardsResponse } from '../types/cards';
 import { IdParams } from '../types/common';
+import {
+  createCard,
+  deleteCard,
+  getManyCards,
+  getOneCard,
+  updateCard,
+} from '../database/cards-repository';
+import { randomUUID } from 'crypto';
 
 export const cardsRouter = express.Router();
 
 cardsRouter.get(
   '/',
-  (request: Request<{}, {}>, response: Response<GetCardsResponse>) => {
-    // TO DO: Return cards
+  async (request: Request<{}, {}>, response: Response<GetCardsResponse>) => {
+    const cards = await getManyCards();
+    response.send(cards);
   },
 );
 
 cardsRouter.get(
   '/:id',
-  (request: Request<IdParams, {}>, response: Response<Card>) => {
-    // TO DO: Return card
+  async (request: Request<IdParams, {}>, response: Response<Card>) => {
+    const card = await getOneCard(request.params.id);
+
+    if (!card) {
+      response.sendStatus(404);
+      return;
+    }
+
+    response.send(card);
   },
 );
 
 cardsRouter.post(
   '/',
-  (request: Request<{}, CreateCardRequest>, response: Response<Card>) => {
-    // TO DO: Create card
+  async (
+    request: Request<{}, Card, CreateCardRequest>,
+    response: Response<Card>,
+  ) => {
+    const card: Card = {
+      text: request.body.text,
+      id: randomUUID(),
+    };
+
+    await createCard(card);
+
+    response.send(card);
   },
 );
 
 cardsRouter.put(
   '/:id',
-  (request: Request<IdParams, Card>, response: Response<Card>) => {
-    // TO DO: Update card
+  async (
+    request: Request<IdParams, Card, CreateCardRequest>,
+    response: Response<Card>,
+  ) => {
+    const card = {
+      id: request.params.id,
+      text: request.body.text,
+    };
+
+    await updateCard(card);
+
+    response.send(card);
   },
 );
 
 cardsRouter.delete(
   '/:id',
-  (request: Request<IdParams>, response: Response<void>) => {
-    // TO DO: Delete card
+  async (request: Request<IdParams>, response: Response<void>) => {
+    await deleteCard(request.params.id);
+
+    response.sendStatus(204);
   },
 );
